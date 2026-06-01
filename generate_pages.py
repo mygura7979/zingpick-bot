@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 
-# 상품 데이터 (나중에 알리 API 연동으로 자동화)
+# 상품 데이터
 products = [
     {"id": "001", "name": "Mini LED Flashlight 1000 Lumen", "price": 8.99, "emoji": "🔦", "category": "Tech Gadgets", "rating": 4.9, "reviews": 2341, "tag": "Hot Today", "desc": "Ultra-bright pocket flashlight with 1000 lumen output. Perfect for camping, emergencies, and everyday carry."},
     {"id": "002", "name": "Wireless Earbuds with Charging Case", "price": 14.99, "emoji": "🎧", "category": "Tech Gadgets", "rating": 4.4, "reviews": 1823, "tag": "Best Seller", "desc": "True wireless earbuds with deep bass, 4-hour playtime, and compact charging case. Works with all devices."},
@@ -25,6 +25,8 @@ products = [
     {"id": "019", "name": "Bamboo Cutting Board Large", "price": 14.49, "emoji": "🔪", "category": "Home & Kitchen", "rating": 4.8, "reviews": 2987, "tag": "Best Seller", "desc": "Extra-large bamboo cutting board with juice groove. Eco-friendly, knife-friendly, easy to clean."},
     {"id": "020", "name": "Foam Roller Massage 33cm", "price": 16.99, "emoji": "🧘", "category": "Health & Fitness", "rating": 4.6, "reviews": 1876, "tag": "Hot Today", "desc": "High-density foam roller for muscle recovery. Grid pattern for deep tissue massage, lightweight."},
 ]
+
+AFFILIATE_LINK = "https://s.click.aliexpress.com/e/_c3pH1yq1"
 
 def generate_product_page(product):
     stars = "★" * int(product["rating"]) + "☆" * (5 - int(product["rating"]))
@@ -49,17 +51,16 @@ def generate_product_page(product):
   .container{{max-width:900px;margin:0 auto;padding:3rem 2rem;}}
   .breadcrumb{{font-size:0.8rem;color:var(--muted);margin-bottom:2rem;}}
   .breadcrumb a{{color:var(--muted);text-decoration:none;}}
-  .breadcrumb a:hover{{color:var(--accent);}}
   .product-wrap{{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem;}}
   .product-img{{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:6rem;aspect-ratio:1;}}
   .product-info{{padding:0.5rem 0;}}
   .tag{{display:inline-block;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.3);color:var(--accent);font-size:0.72rem;font-weight:700;padding:0.25rem 0.8rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.06em;}}
-  .product-info h1{{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.8rem;line-height:1.2;letter-spacing:-0.02em;}}
+  .product-info h1{{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.8rem;line-height:1.2;}}
   .rating{{display:flex;align-items:center;gap:0.5rem;margin-bottom:1.2rem;}}
   .stars{{color:var(--accent);font-size:0.9rem;}}
   .rating-num{{font-size:0.85rem;color:var(--muted);}}
   .price-wrap{{margin-bottom:1.5rem;}}
-  .price{{font-family:'DM Sans',sans-serif;font-size:2.5rem;font-weight:700;color:var(--accent);letter-spacing:-0.02em;}}
+  .price{{font-size:2.5rem;font-weight:700;color:var(--accent);}}
   .price-sub{{font-size:0.85rem;color:var(--muted);margin-top:0.2rem;}}
   .cta-btn{{display:block;background:var(--accent);color:#0a0a0f;font-weight:700;font-size:1rem;padding:1rem 2rem;border-radius:10px;text-decoration:none;text-align:center;margin-bottom:1rem;transition:transform .2s,box-shadow .2s;}}
   .cta-btn:hover{{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,197,24,0.3);}}
@@ -67,10 +68,9 @@ def generate_product_page(product):
   .desc-section h2{{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:0.8rem;}}
   .desc-section p{{color:#ccc;line-height:1.7;font-size:0.95rem;}}
   .notice{{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.4rem;font-size:0.8rem;color:var(--muted);margin:2rem 0;line-height:1.7;}}
-  .notice strong{{color:var(--text);font-weight:600;}}
   footer{{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.82rem;}}
   footer a{{color:var(--muted);text-decoration:none;margin:0 0.8rem;}}
-  @media(max-width:600px){{.product-wrap{{grid-template-columns:1fr;}}.product-info h1{{font-size:1.4rem;}}}}
+  @media(max-width:600px){{.product-wrap{{grid-template-columns:1fr;}}}}
 </style>
 </head>
 <body>
@@ -80,7 +80,7 @@ def generate_product_page(product):
 </nav>
 <div class="container">
   <div class="breadcrumb">
-    <a href="/">Home</a> → <a href="/">{ product["category"]}</a> → {product["name"]}
+    <a href="/">Home</a> → {product["category"]} → {product["name"]}
   </div>
   <div class="product-wrap">
     <div class="product-img">{product["emoji"]}</div>
@@ -95,7 +95,7 @@ def generate_product_page(product):
         <div class="price">${product["price"]}</div>
         <div class="price-sub">Free shipping • In stock</div>
       </div>
-      <a href="https://s.click.aliexpress.com/e/_c3pH1yq1" class="cta-btn" target="_blank" rel="nofollow">
+      <a href="{AFFILIATE_LINK}" class="cta-btn" target="_blank" rel="nofollow noopener">
         View Deal on AliExpress →
       </a>
     </div>
@@ -110,19 +110,107 @@ def generate_product_page(product):
 </div>
 <footer>
   <div style="margin-bottom:1rem;">
-    <a href="/">Home</a><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Affiliate Disclosure</a>
+    <a href="/">Home</a><a href="#">Privacy Policy</a><a href="#">Affiliate Disclosure</a>
   </div>
   <div>© 2026 ZingPick.com — Best Gadgets Under $20</div>
 </footer>
 </body>
 </html>"""
 
+def generate_index():
+    cards = ""
+    for p in products:
+        stars_full = int(p["rating"])
+        stars_html = "★" * stars_full + "☆" * (5 - stars_full)
+        cards += f"""
+    <div class="card">
+      <a href="/product-{p['id']}.html" class="card-link">
+        <div class="card-img">{p["emoji"]}</div>
+        <div class="card-body">
+          <div class="card-tag">{p["tag"]}</div>
+          <div class="card-stars">{stars_html} {p["rating"]}</div>
+          <div class="card-name">{p["name"]}</div>
+          <div class="card-bottom">
+            <span class="card-price">${p["price"]}</span>
+            <a href="/product-{p['id']}.html" class="deal-btn">View Deal</a>
+          </div>
+        </div>
+      </a>
+    </div>"""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZingPick — Best Gadgets Under $20</title>
+<meta name="description" content="Handpicked cool gadgets under $20. Updated daily. Weird, useful, and surprisingly cheap finds from AliExpress.">
+<meta name="google-site-verification" content="FzoRvl9cHrVod1lj3iaOrRupP6QbcFn7yaKU2Z_qATY" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--accent:#f5c518;--accent2:#ff6b35;--text:#f0f0f0;--muted:#888;}}
+  *{{margin:0;padding:0;box-sizing:border-box;}}
+  body{{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}}
+  nav{{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.95);position:sticky;top:0;z-index:100;}}
+  .logo{{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--accent);text-decoration:none;}}
+  .logo span{{color:var(--accent2);}}
+  .hero{{text-align:center;padding:5rem 2rem 3rem;}}
+  .hero h1{{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1.1;margin-bottom:1rem;}}
+  .hero h1 span{{color:var(--accent);}}
+  .hero p{{color:var(--muted);font-size:1.1rem;max-width:500px;margin:0 auto 2rem;}}
+  .grid{{max-width:1200px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;}}
+  .card{{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s;}}
+  .card:hover{{transform:translateY(-4px);border-color:var(--accent);}}
+  .card-link{{text-decoration:none;color:inherit;}}
+  .card-img{{background:#1a1a24;display:flex;align-items:center;justify-content:center;font-size:4rem;padding:2rem;}}
+  .card-body{{padding:1.2rem;}}
+  .card-tag{{display:inline-block;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.3);color:var(--accent);font-size:0.68rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px;margin-bottom:0.5rem;text-transform:uppercase;}}
+  .card-stars{{color:var(--accent);font-size:0.75rem;margin-bottom:0.4rem;}}
+  .card-name{{font-weight:600;font-size:0.95rem;margin-bottom:1rem;line-height:1.4;}}
+  .card-bottom{{display:flex;align-items:center;justify-content:space-between;}}
+  .card-price{{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent);}}
+  .deal-btn{{background:var(--accent);color:#0a0a0f;font-weight:700;font-size:0.82rem;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;transition:background .2s;}}
+  .deal-btn:hover{{background:#e6b800;}}
+  footer{{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.82rem;margin-top:3rem;}}
+  footer a{{color:var(--muted);text-decoration:none;margin:0 0.8rem;}}
+  @media(max-width:600px){{.hero h1{{font-size:2.2rem;}}}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Zing<span>Pick</span></a>
+</nav>
+<div class="hero">
+  <h1>Cool Gadgets<br><span>Under $20</span></h1>
+  <p>Handpicked finds from around the world. Weird, useful, and surprisingly cheap. Updated daily.</p>
+</div>
+<div class="grid">
+  {cards}
+</div>
+<footer>
+  <div style="margin-bottom:0.5rem;">
+    <a href="#">Privacy Policy</a><a href="#">Affiliate Disclosure</a>
+  </div>
+  <div>© 2026 ZingPick.com — Best Gadgets Under $20</div>
+  <div style="margin-top:0.5rem;font-size:0.75rem;">We earn a commission from AliExpress when you purchase through our links.</div>
+</footer>
+</body>
+</html>"""
+
 # 페이지 생성
 os.makedirs("pages", exist_ok=True)
+
+# index.html 생성
+with open("pages/index.html", "w", encoding="utf-8") as f:
+    f.write(generate_index())
+print("✅ 생성됨: pages/index.html")
+
+# 상품 페이지 생성
 for p in products:
     filename = f"pages/product-{p['id']}.html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(generate_product_page(p))
     print(f"✅ 생성됨: {filename}")
 
-print(f"\n총 {len(products)}개 상품 페이지 생성 완료!")
+print(f"\n총 {len(products)+1}개 파일 생성 완료!")
