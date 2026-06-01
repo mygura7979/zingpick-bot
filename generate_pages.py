@@ -95,7 +95,7 @@ def generate_product_page(product):
         <div class="price">${product["price"]}</div>
         <div class="price-sub">Free shipping • In stock</div>
       </div>
-      <a href="https://www.aliexpress.com/wholesale?SearchText={product["name"].replace(" ", "+")}" class="cta-btn" target="_blank" rel="nofollow">
+      <a href="https://s.click.aliexpress.com/e/_c3pH1yq1" class="cta-btn" target="_blank" rel="nofollow">
         View Deal on AliExpress →
       </a>
     </div>
