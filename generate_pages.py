@@ -8,7 +8,7 @@ AFFILIATE_ID = "c3pH1yq1"
 def make_ali_link(search_keyword):
     """상품명으로 알리 검색결과 + 어필리에이트 링크 생성"""
     encoded = quote(search_keyword)
-    return f"https://s.click.aliexpress.com/e/_{AFFILIATE_ID}?searchText={encoded}"
+    return f"https://www.aliexpress.com/wholesale?SearchText={encoded}&aff_fcid={AFFILIATE_ID}&aff_platform=portals-tool"
 
 # 상품 데이터
 products = [
