@@ -24,6 +24,7 @@ jobs:
         run: |
           cp index.html pages/index.html || true
           cp sitemap.xml pages/sitemap.xml || true
+          cp _headers pages/_headers || true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
