@@ -215,3 +215,28 @@ for p in products:
     print(f"✅ 생성됨: {filename}")
 
 print(f"\n총 {len(products)+1}개 파일 생성 완료!")
+
+# sitemap.xml 자동 생성
+sitemap_urls = ['<url><loc>https://zingpick.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>']
+for p in products:
+    sitemap_urls.append(f'<url><loc>https://zingpick.com/product-{p["id"]}.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')
+
+sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+sitemap += '\n'.join(sitemap_urls)
+sitemap += '\n</urlset>'
+
+with open("pages/sitemap.xml", "w", encoding="utf-8") as f:
+    f.write(sitemap)
+print("✅ 생성됨: pages/sitemap.xml")
+
+# _headers 파일 생성 (Cloudflare 스크립트 주입 방지)
+headers = """/sitemap.xml
+  Content-Type: application/xml
+  X-Robots-Tag: noindex
+
+/*.html
+  X-Frame-Options: DENY
+"""
+with open("pages/_headers", "w", encoding="utf-8") as f:
+    f.write(headers)
+print("✅ 생성됨: pages/_headers")
